@@ -3,7 +3,6 @@ import smtplib
 from email.mime.text import MIMEText
 import os
 
-# Function to get the private IP
 def get_private_ip():
     try:
         s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
@@ -14,7 +13,6 @@ def get_private_ip():
     except Exception as e:
         return None
 
-# Function to send an email
 def send_email(subject, body, sender_email, sender_password, recipient_email):
     try:
         msg = MIMEText(body)
@@ -29,40 +27,36 @@ def send_email(subject, body, sender_email, sender_password, recipient_email):
     except Exception as e:
         print(f"Failed to send email: {e}")
 
-# Function to monitor and handle IP changes
 def monitor_ip_change():
-    # Path to store the previous IP
     ip_file = "last_ip.txt"
 
-    # Get the current private IP
     current_ip = get_private_ip()
     if not current_ip:
         print("Unable to retrieve IP address.")
         return
 
-    # Check if there's a stored IP
     if os.path.exists(ip_file):
         with open(ip_file, 'r') as file:
             last_ip = file.read().strip()
     else:
         last_ip = None
 
-    # Compare and act if IP has changed
+    # Compare and act
     if current_ip != last_ip:
         print(f"IP has changed: {last_ip} -> {current_ip}")
-        # Update the stored IP
+        # updte
         with open(ip_file, 'w') as file:
             file.write(current_ip)
 
-        # Email credentials and recipient
+        # email creds
         sender_email = "astrobradrequests@gmail.com"
 
-        # export EMAIL_PASSWORD="ksno dlby fhvs vhzm"
+        # export EMAIL_PASSWORD="password" in terminal, ill email you the password
         sender_password = os.getenv("EMAIL_PASSWORD")
         print(sender_password)
         if not sender_password:
             raise ValueError("EMAIL_PASSWORD environment variable is not set.")
-
+	#Change to your email
         recipient_email = "pvz5hs@virginia.edu"
 
         # Send email notification
